@@ -105,18 +105,65 @@ int PPChuanHoaMaTran()
 int main()
 {
     ios::sync_with_stdio(false); cin.tie(NULL);
-	freopen("input.txt", "r", stdin);
+	freopen("input3.txt", "r", stdin);
 	//freopen("output.txt", "w", stdout);
 
     cin >> n >> check;
-    for(int i = 0; i < n; i++)
-    {
-        for(int j = 0; j < n; j++)
+    if(check == 0) {
+        for(int i = 0; i < n; i++)
         {
-            cin >> data[i][j];
-            sumCot[j] += data[i][j];
+            for(int j = 0; j < n; j++)
+            {
+                cin >> data[i][j];
+                sumCot[j] += data[i][j];
+            }
+        }
+    } else if (check == 1) {
+        for(int i = 0; i < n; i++)
+        {
+            cin >> data[0][i];
+            sumCot[i] += data[0][i];
+        }
+        for(int i = 1; i < n; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(i == j) {
+                    data[i][j] = 1;
+                } else if(j == 0) {
+                    data[i][0] = 1/data[0][i];
+                }else data[i][j] = data[i][0]*data[0][j];
+                sumCot[j] += data[i][j];
+            }
+        }
+    } else {
+        for(int i = 0; i < n-1; i++)
+        {
+            cin >> data[i][i+1];
+        }
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(i == j) {
+                    data[i][j] = 1;
+                    sumCot[j] += data[i][j];
+                    continue;
+                }
+                if(data[i][j] > 0) {
+                    sumCot[j] += data[i][j];
+                    continue;
+                }
+                if(j > i) {
+                    data[i][j] = data[i][j - 1] * data[j - 1][j];
+                } else {
+                    data[i][j] = 1 / data[j][i];
+                }
+                sumCot[j] += data[i][j];
+            }
         }
     }
+    
     cout << "data: " << endl;
     printArray2(data, n, n);
     int c = 0;
